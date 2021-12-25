@@ -20,6 +20,7 @@
   "homepage": "https://github.com/hineshvadgama/cars_api#readme",
   "dependencies": {
     "express": "^4.17.2",
+    "helmet": "^4.6.0",
     "swagger-ui-express": "^4.3.0",
     "tsoa": "^3.14.1"
   },
