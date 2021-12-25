@@ -4,11 +4,12 @@ import swaggerUi from 'swagger-ui-express';
 import { RegisterRoutes } from './tsoa/routes';
 import helmet from 'helmet';
 
+export const app: Express = express();
+
 function run() {
     
     dotenv.config();
 
-    const app: Express = express();
     const PORT = process.env.PORT ? process.env.PORT : 3000;
 
     // Basic security
