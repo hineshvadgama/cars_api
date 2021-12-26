@@ -15,6 +15,9 @@ function run() {
     // Basic security
     app.use(helmet());
 
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
+
     app.use("/docs", swaggerUi.serve, async (_req: Request, res: Response) => {
         return res.send(
             swaggerUi.generateHTML(await import("./tsoa/swagger.json"))

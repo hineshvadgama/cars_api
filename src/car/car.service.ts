@@ -14,4 +14,10 @@ export class CarService {
 
         return car;
     }
+
+    public post(car: Car): Car {
+
+        // Post to storage later on
+        return car;
+    }
 }
