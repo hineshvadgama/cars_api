@@ -45,3 +45,28 @@ export const addToFile = (filePath: string, newData: any): any => {
 
     return fileData;
 }
+
+export const removeFromFile = (filePath: string, idToRemove: number): any => {
+
+    const fileData = readFile(filePath);
+
+    if (typeof(fileData) === 'string') {
+
+        const parsedFileData: Array<any> = JSON.parse(fileData);
+        const remainingArray: Array<any> = parsedFileData.filter(data => data.id !== idToRemove);
+        const fileJsonData: string = JSON.stringify(remainingArray);
+
+        try {
+            fs.writeFileSync(filePath, fileJsonData, {encoding: 'utf-8', mode: 0o666, flag: 'w'});
+        }
+        catch (error) {
+            return {
+                success: false,
+                message: "Failed to add car",
+                error: error
+            }
+        }
+        return fileJsonData;
+    }
+    return fileData;
+}

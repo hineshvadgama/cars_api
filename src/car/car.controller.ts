@@ -4,11 +4,13 @@ import {
     SuccessResponse,
     Get,
     Post,
-    Body
+    Body,
+    Delete,
+    Query
 } from 'tsoa';
 import { CarService } from './car.service';
 import { Car, instanceOfCar } from './car';
-import { Error } from '../error/error';
+import { Error, instanceOfError } from '../error/error';
 
 @Route('car')
 export class CarController extends Controller {
@@ -33,9 +35,22 @@ export class CarController extends Controller {
 
         const carService = new CarService;
         const newCar: Car | Error = carService.post(requestBody);
-        const status = instanceOfCar(newCar) ? 201 : 500;
+        const status: number = instanceOfCar(newCar) ? 201 : 500;
         this.setStatus(status);
 
         return newCar;
+    }
+
+    @SuccessResponse('200', 'OK')
+    @Delete()
+    public delete(
+        @Query() id: number
+    ): Array<Car> | Error {
+
+        const carService = new CarService;
+        const remainingCars: Array<Car> | Error = carService.remove(id);
+        const status: number = instanceOfError(remainingCars) ? 500 : 200;
+        this.setStatus(status);
+        return remainingCars;
     }
 }

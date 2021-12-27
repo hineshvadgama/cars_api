@@ -1,11 +1,11 @@
 import { Car } from './car';
-import { readFile, addToFile } from '../storage';
+import { readFile, addToFile, removeFromFile } from '../storage';
 import path from 'path';
 import { Error } from '../error/error';
 
 export class CarService {
 
-    pathToFile: string = path.resolve('src', 'car.data.json');
+    pathToFile: string = path.resolve('src/car', 'car.data.json');
 
     public get(): Array<Car> | Error {
 
@@ -25,5 +25,12 @@ export class CarService {
         }
 
         return addToFile(this.pathToFile, newCar);
+    }
+
+    public remove(id: number): Array<Car> | Error {
+
+        const remainingCars = removeFromFile(this.pathToFile, id);
+        if (typeof(remainingCars) === 'string') return JSON.parse(remainingCars);
+        return remainingCars;
     }
 }
