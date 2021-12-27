@@ -7,28 +7,35 @@ import {
     Body
 } from 'tsoa';
 import { CarService } from './car.service';
-import { Car } from './car';
+import { Car, instanceOfCar } from './car';
+import { Error } from '../error/error';
 
 @Route('car')
 export class CarController extends Controller {
 
     @SuccessResponse('200', 'OK')
     @Get()
-    public get(): Car {
+    public get(): Array<Car> | Error {
+
         const carService = new CarService;
-        const car: Car = carService.get();
-        this.setStatus(200);
-        return car;
+        const cars: Array<Car> | Error = carService.get();
+        const status = Array.isArray(cars) ? 200 : 500;
+        this.setStatus(status);
+
+        return cars;
     }
 
     @SuccessResponse('201', 'Created')
     @Post()
     public post(
         @Body() requestBody: Car
-    ): Car {
+    ): Car | Error {
+
         const carService = new CarService;
-        const newCar: Car = carService.post(requestBody);
-        this.setStatus(201);
+        const newCar: Car | Error = carService.post(requestBody);
+        const status = instanceOfCar(newCar) ? 201 : 500;
+        this.setStatus(status);
+
         return newCar;
     }
 }

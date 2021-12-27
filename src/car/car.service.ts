@@ -1,23 +1,29 @@
 import { Car } from './car';
+import { readFile, addToFile } from '../storage';
+import path from 'path';
+import { Error } from '../error/error';
 
 export class CarService {
 
-    public get(): Car {
+    pathToFile: string = path.resolve('src', 'car.data.json');
 
-        // Get from storage later on
-        const car: Car = {
-            make: 'Renault',
-            model: 'Megane',
-            colour: 'Yellow',
-            year: 2021
-        }
+    public get(): Array<Car> | Error {
 
-        return car;
+        const cars: string | Error = readFile(this.pathToFile);
+        if (typeof (cars) === 'string') return JSON.parse(cars);
+        return cars;
     }
 
-    public post(car: Car): Car {
+    public post(car: Car): Car | Error {
 
-        // Post to storage later on
-        return car;
+        const newCar: Car = {
+            id: Date.now(),
+            make: car.make,
+            model: car.model,
+            colour: car.colour,
+            year: car.year
+        }
+
+        return addToFile(this.pathToFile, newCar);
     }
 }

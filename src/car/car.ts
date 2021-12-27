@@ -5,3 +5,7 @@ export interface Car {
     colour: string,
     year: number
 }
+
+export const instanceOfCar = (data: any): data is Car => {
+    return data.make !== undefined;
+}
