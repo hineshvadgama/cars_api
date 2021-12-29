@@ -11,13 +11,14 @@ const pathToFile: string = path.resolve('src/car', 'car.data.json');
 describe('car', () => {
 
     let fileData: string | Error | null;
+    const initialCarId = 1640528728523;
 
     beforeEach(() => {
 
         fileData = readFile(pathToFile);
 
         const testData: Array<Car> = [{
-            id: 1640528728523,
+            id: initialCarId,
             make: "Lancia",
             model: "Delta",
             colour: "Red",
@@ -74,21 +75,12 @@ describe('car', () => {
 
     it('DELETE', async () => {
 
-        // Get file data
-        let fileData: string | Error = readFile(pathToFile);
-        if (typeof (fileData) === 'string') {
-            
-            const parsedFileData: Array<Car> = JSON.parse(fileData);
-            
-            // Make request
-            const response = await request(app).delete(`/car?id=${parsedFileData[0].id}`);
-            
-            expect(response.statusCode).toBe(200);
-            expect(response.body.length).toEqual(parsedFileData.length - 1);
+        const response = await request(app).delete(`/car?id=${initialCarId}`);    
+        expect(response.statusCode).toBe(200);
+        expect(response.body.length).toEqual(0);
 
-        } else {
-            throw fileData;
-        }
+        const getResponse = await request(app).get('/car');
+        expect(getResponse.body).toEqual([]);
     });
 
     it('PUT', async () => {
@@ -96,7 +88,7 @@ describe('car', () => {
         // Assert data in initial state
         let getResponse = await request(app).get('/car');
         expect(getResponse.body).toEqual([{
-            id: 1640528728523,
+            id: initialCarId,
             make: "Lancia",
             model: "Delta",
             colour: "Red",
@@ -104,24 +96,25 @@ describe('car', () => {
         }]);
 
         // Send request to change data
-        const putResponse = await request(app).put('/car?id=1640528728523').send({
+        const putResponse = await request(app).put(`/car?id=${initialCarId}`).send({
             make: 'Tesla',
             model: 'Model S',
             colour: 'White',
             year: 2021
         });
         expect(putResponse.body).toEqual({
-            id: 1640528728523,
+            id: initialCarId,
             make: 'Tesla',
             model: 'Model S',
             colour: 'White',
             year: 2021
         });
+        expect(putResponse.statusCode).toBe(200);
 
         // Confirm data has actually changed
         getResponse = await request(app).get('/car');
         expect(getResponse.body).toEqual([{
-            id: 1640528728523,
+            id: initialCarId,
             make: 'Tesla',
             model: 'Model S',
             colour: 'White',
