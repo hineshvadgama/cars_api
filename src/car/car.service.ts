@@ -1,5 +1,5 @@
 import { Car } from './car';
-import { readFile, addToFile, removeFromFile } from '../storage';
+import { readFile, addToFile, removeFromFile, updateFile } from '../storage';
 import path from 'path';
 import { Error } from '../error/error';
 
@@ -32,5 +32,9 @@ export class CarService {
         const remainingCars = removeFromFile(this.pathToFile, id);
         if (typeof(remainingCars) === 'string') return JSON.parse(remainingCars);
         return remainingCars;
+    }
+
+    public update(id: number, carProperties: Car): Car | Error {
+        return updateFile(this.pathToFile, id, carProperties);
     }
 }

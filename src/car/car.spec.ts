@@ -90,4 +90,42 @@ describe('car', () => {
             throw fileData;
         }
     });
+
+    it('PUT', async () => {
+
+        // Assert data in initial state
+        let getResponse = await request(app).get('/car');
+        expect(getResponse.body).toEqual([{
+            id: 1640528728523,
+            make: "Lancia",
+            model: "Delta",
+            colour: "Red",
+            year: 1991
+        }]);
+
+        // Send request to change data
+        const putResponse = await request(app).put('/car?id=1640528728523').send({
+            make: 'Tesla',
+            model: 'Model S',
+            colour: 'White',
+            year: 2021
+        });
+        expect(putResponse.body).toEqual({
+            id: 1640528728523,
+            make: 'Tesla',
+            model: 'Model S',
+            colour: 'White',
+            year: 2021
+        });
+
+        // Confirm data has actually changed
+        getResponse = await request(app).get('/car');
+        expect(getResponse.body).toEqual([{
+            id: 1640528728523,
+            make: 'Tesla',
+            model: 'Model S',
+            colour: 'White',
+            year: 2021
+        }]);
+    });
 });

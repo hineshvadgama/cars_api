@@ -6,7 +6,8 @@ import {
     Post,
     Body,
     Delete,
-    Query
+    Query,
+    Put
 } from 'tsoa';
 import { CarService } from './car.service';
 import { Car, instanceOfCar } from './car';
@@ -52,5 +53,19 @@ export class CarController extends Controller {
         const status: number = instanceOfError(remainingCars) ? 500 : 200;
         this.setStatus(status);
         return remainingCars;
+    }
+
+    @SuccessResponse('200', 'OK')
+    @Put()
+    public update(
+        @Query() id: number,
+        @Body() requestBody: Car
+    ): Car | Error {
+
+        const carService = new CarService;
+        const updatedCar = carService.update(id, requestBody);
+        const status: number = instanceOfError(updatedCar) ? 500 : 200;
+        this.setStatus(status);
+        return updatedCar;
     }
 }

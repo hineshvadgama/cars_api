@@ -12,7 +12,7 @@ export const readFile = (filePath: string): string | Error => {
 
         return {
             success: false,
-            message: "Failed to get cars",
+            message: "Failed to get",
             error: error
         }
     }
@@ -36,7 +36,7 @@ export const addToFile = (filePath: string, newData: any): any => {
         catch (error) {
             return {
                 success: false,
-                message: "Failed to add car",
+                message: "Failed to add",
                 error: error
             }
         }
@@ -62,11 +62,42 @@ export const removeFromFile = (filePath: string, idToRemove: number): any => {
         catch (error) {
             return {
                 success: false,
-                message: "Failed to add car",
+                message: "Failed to add",
                 error: error
             }
         }
         return fileJsonData;
+    }
+    return fileData;
+}
+
+export const updateFile = (filePath: string, idToUpdate: number, modifiedProperties: any): any => {
+
+    const fileData = readFile(filePath);
+
+    if (typeof(fileData) === 'string') {
+
+        const parsedFileData: Array<any> = JSON.parse(fileData);
+        let itemToUpdate: any = parsedFileData.filter(data => data.id === idToUpdate);
+        itemToUpdate = itemToUpdate[0];
+
+        // Only update the modified properties of the current object
+        const keys = Object.keys(itemToUpdate);
+        keys.forEach(key => {
+            if (modifiedProperties[key] !== undefined) itemToUpdate[key] = modifiedProperties[key];
+        });
+        
+        try {
+            fs.writeFileSync(filePath, JSON.stringify(parsedFileData), {encoding: 'utf-8', mode: 0o666, flag: 'w'});
+        }
+        catch (error) {
+            return {
+                success: false,
+                message: "Failed to modify",
+                error: error
+            }
+        }
+        return itemToUpdate;
     }
     return fileData;
 }
