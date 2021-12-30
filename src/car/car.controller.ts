@@ -18,10 +18,10 @@ export class CarController extends Controller {
 
     @SuccessResponse('200', 'OK')
     @Get()
-    public get(): Array<Car> | Error {
+    public async get(): Promise<Array<Car> | Error> {
 
         const carService = new CarService;
-        const cars: Array<Car> | Error = carService.get();
+        const cars: Array<Car> | Error = await carService.get();
         const status = Array.isArray(cars) ? 200 : 500;
         this.setStatus(status);
 

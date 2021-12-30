@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/hineshvadgama/cars_api#readme",
   "dependencies": {
+    "axios": "^0.24.0",
     "express": "^4.17.2",
     "helmet": "^4.6.0",
     "swagger-ui-express": "^4.3.0",

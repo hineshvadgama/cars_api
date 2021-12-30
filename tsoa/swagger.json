@@ -18,6 +18,9 @@
 					"model": {
 						"type": "string"
 					},
+					"similarModelWords": {
+						"type": "string"
+					},
 					"colour": {
 						"type": "string"
 					},
@@ -163,10 +166,19 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "OK",
 						"content": {
 							"application/json": {
-								"schema": {}
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Car"
+										},
+										{
+											"$ref": "#/components/schemas/Error"
+										}
+									]
+								}
 							}
 						}
 					}

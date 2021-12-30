@@ -84,7 +84,9 @@ export const updateFile = (filePath: string, idToUpdate: number, modifiedPropert
         // Only update the modified properties of the current object
         const keys = Object.keys(itemToUpdate);
         keys.forEach(key => {
-            if (modifiedProperties[key] !== undefined) itemToUpdate[key] = modifiedProperties[key];
+            if (key !== 'id' && modifiedProperties[key] !== undefined) {
+                itemToUpdate[key] = modifiedProperties[key];
+            }
         });
         
         try {

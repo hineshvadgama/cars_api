@@ -15,6 +15,7 @@ const models: TsoaRoute.Models = {
             "id": {"dataType":"double"},
             "make": {"dataType":"string"},
             "model": {"dataType":"string"},
+            "similarModelWords": {"dataType":"string"},
             "colour": {"dataType":"string"},
             "year": {"dataType":"double"},
         },
