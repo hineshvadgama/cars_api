@@ -7,8 +7,8 @@ A simple API designed to perform CRUD operations on cars.
 Install dependencies:
 `npm install`
 
-Generate tsoa route and swagger files:
-`npm run routes`
+Generate tsoa route and swagger files and build:
+`npm run build`
 
 Run the API locally:
 `npm run serve`
@@ -21,5 +21,5 @@ Run unit tests:
 
 ## Generate a Build
 
-Build the API:
-`npm run build`
+Generate tsoa route and swagger files:
+`npm run routes`
