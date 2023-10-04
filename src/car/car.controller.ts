@@ -16,12 +16,13 @@ import { Error, instanceOfError } from '../error/error';
 @Route('car')
 export class CarController extends Controller {
 
+    carService: CarService = new CarService;
+
     @SuccessResponse('200', 'OK')
     @Get()
     public async get(): Promise<Array<Car> | Error> {
 
-        const carService = new CarService;
-        const cars: Array<Car> | Error = await carService.get();
+        const cars: Array<Car> | Error = await this.carService.get();
         const status = Array.isArray(cars) ? 200 : 500;
         this.setStatus(status);
 
@@ -34,8 +35,7 @@ export class CarController extends Controller {
         @Body() requestBody: Car
     ): Car | Error {
 
-        const carService = new CarService;
-        const newCar: Car | Error = carService.post(requestBody);
+        const newCar: Car | Error = this.carService.post(requestBody);
         const status: number = instanceOfCar(newCar) ? 201 : 500;
         this.setStatus(status);
 
@@ -48,8 +48,7 @@ export class CarController extends Controller {
         @Query() id: number
     ): Array<Car> | Error {
 
-        const carService = new CarService;
-        const remainingCars: Array<Car> | Error = carService.remove(id);
+        const remainingCars: Array<Car> | Error = this.carService.remove(id);
         const status: number = instanceOfError(remainingCars) ? 500 : 200;
         this.setStatus(status);
         return remainingCars;
@@ -62,8 +61,7 @@ export class CarController extends Controller {
         @Body() requestBody: Car
     ): Car | Error {
 
-        const carService = new CarService;
-        const updatedCar = carService.update(id, requestBody);
+        const updatedCar = this.carService.update(id, requestBody);
         const status: number = instanceOfError(updatedCar) ? 500 : 200;
         this.setStatus(status);
         return updatedCar;
