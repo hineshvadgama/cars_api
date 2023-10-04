@@ -62,7 +62,7 @@ export const removeFromFile = (filePath: string, idToRemove: number): any => {
         catch (error) {
             return {
                 success: false,
-                message: "Failed to add",
+                message: "Failed to remove",
                 error: error
             }
         }
